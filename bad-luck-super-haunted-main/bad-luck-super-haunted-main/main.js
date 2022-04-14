@@ -235,6 +235,24 @@ onKeyPress ("down", ()=> {
   }
 })
 
+//preparing for cat possession
+
+// onKeyPress ("down", ()=> {
+//   if (player.isColliding(cat)) {
+//     poss =! poss;
+//     if(poss==true){
+//     console.log("true"),
+//     player.unuse(sprite('player'))
+//     player.use(sprite('cat'))
+//     }
+//     if(poss==false){
+//       console.log("false"),
+//       player.use(sprite('player'))
+//       player.unuse(sprite('cat'))
+//       }
+//   }
+// })
+
 
 player.onUpdate(() => {
   camPos(player.pos)
