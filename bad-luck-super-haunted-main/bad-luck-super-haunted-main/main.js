@@ -273,6 +273,7 @@ player.onCollide('enemy1', (e)=> {
   score.value++
   score.text = score.value
   }
+  ENEMY_SPEED = ENEMY_SPEED * -1;
 });
 
 
