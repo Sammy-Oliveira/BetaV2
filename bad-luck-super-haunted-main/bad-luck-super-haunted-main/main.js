@@ -31,12 +31,12 @@ const LEVELS = [
   '                                          ', 
   '                                          ',
   '                                          ',
-  '                 ?  &  ?                  ',
+  '                 ?- &  ?                  ',
   '                 !!!!!!!                  ',
   '                                          ',
   '             !!               !!!!        ',
   '                                          ',
-  '       ?                 ^    ?           ',
+  '    ~  ?                 ^    ?           ',
   '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!',
 ], 
 [
@@ -50,7 +50,7 @@ const LEVELS = [
   '                                        ',
   '                                        ',
   '                                        ',
-  '        ?       &           ?           ',
+  '        ?    -  &           ?           ',
   '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!',
 ],
 [
@@ -110,6 +110,18 @@ const LEVELS = [
   '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!',
  ],
 ]
+
+let go_table = () => {return [
+  sprite('table'),
+  'table',
+  area()
+]}
+
+let go_cat = () => {return [
+  sprite('cat'),
+  'cat',
+  area(),
+]}
   
 scene("game", ({ levelIdx }) => {
   
@@ -123,8 +135,8 @@ scene("game", ({ levelIdx }) => {
   '?' : ()=>[sprite('invis-wall'), 'invis-wall', area()],
  '&' : ()=>[sprite('enemy1'), 'enemy1', area(), body()],
  '^' : ()=>[sprite('enemy2'), 'enemy2', area(), body(), ],
-  '-' : ()=>[sprite('table'), 'table', area(), ],
-  '~' : ()=>[sprite('cat'), 'cat', area(), body(), ],
+  '-' : go_table,
+  '~' : go_cat,
 })
 
 
@@ -172,17 +184,15 @@ add([
 add([
   text('you can avoid the yellow by haunting objects like tables, haunt and unhaunt objects by pressing down'),
   origin('center'),
+  pos(0, height() / 2.5),
+])
+
+add([
+  text('but when possessing cats, you cant scare civies, so you gotta unpossess the cat!'),
+  origin('center'),
   pos(0, height() / 2),
 ])
 
-let table = add([
-  sprite('table'),
-  pos(450, 320),
-  width(32), 
-  height(64),
-  area(),
-  //body(),
-])
 
 let player = add([
 	sprite("player"),
@@ -216,40 +226,42 @@ onKeyPress ("up", ()=> {
 
 
 onKeyPress ("down", ()=> {
-  if (player.isColliding(table)) {
-    poss =! poss;
+  poss =! poss;
+  if(poss==false){
+    console.log("false"),
+    MOVE_SPEED = 200,
+    JUMP_FORCE = 550
+    player.use(sprite('player'))
+    player.unuse(sprite('table'))
+    }
+  let t = get('table')[0]
+  if (player.isColliding(t)) {
     if(poss==true){
-    console.log("true"),
     MOVE_SPEED = 0,
     JUMP_FORCE = 0
     player.unuse(sprite('player'))
     player.use(sprite('table'))
     }
-    if(poss==false){
-      console.log("false"),
-      MOVE_SPEED = 200,
-      JUMP_FORCE = 550
-      player.use(sprite('player'))
-      player.unuse(sprite('table'))
-      }
   }
 })
 
 //preparing for cat possession
 
 // onKeyPress ("down", ()=> {
-//   if (player.isColliding(cat)) {
-//     poss =! poss;
+//   poss =! poss;
+//   let c = get('cat')[0]
+//   if(poss==false){
+//     console.log("false"),
+//     MOVE_SPEED = 200,
+//     JUMP_FORCE = 550
+//     player.use(sprite('player'))
+//     player.unuse(sprite('cat'))
+//     }
+//   if (player.isColliding(c)) {
 //     if(poss==true){
-//     console.log("true"),
 //     player.unuse(sprite('player'))
 //     player.use(sprite('cat'))
 //     }
-//     if(poss==false){
-//       console.log("false"),
-//       player.use(sprite('player'))
-//       player.unuse(sprite('cat'))
-//       }
 //   }
 // })
 
